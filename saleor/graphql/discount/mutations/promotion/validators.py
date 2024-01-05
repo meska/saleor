@@ -249,7 +249,8 @@ def _clean_checkout_and_order_predicate(
         errors["checkout_and_order_predicate"].append(error)
         return
 
-    rules_count = instance.promotion.rules.count()
+    promotion = cleaned_input["promotion"]
+    rules_count = promotion.rules.count()
     rules_limit = settings.CHECKOUT_AND_ORDER_RULES_LIMIT
     if rules_count >= rules_limit:
         errors["checkout_and_order_predicate"].append(
