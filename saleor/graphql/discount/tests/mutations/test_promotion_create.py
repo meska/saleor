@@ -303,7 +303,7 @@ def test_promotion_create_by_customer(
 
 
 @freeze_time("2020-03-18 12:00:00")
-def test_promotion_create_with_checkout_and_order_rule(
+def test_promotion_create_with_order_rule(
     staff_api_client,
     permission_group_manage_discounts,
     description_json,
@@ -317,7 +317,7 @@ def test_promotion_create_with_checkout_and_order_rule(
     end_date = timezone.now() + timedelta(days=30)
 
     promotion_name = "test promotion"
-    checkout_and_order_predicate = {
+    order_predicate = {
         "discountedObjectPredicate": {"subtotalPrice": {"range": {"gte": 100}}}
     }
     rule_name = "test promotion rule 1"
@@ -340,7 +340,7 @@ def test_promotion_create_with_checkout_and_order_rule(
                     "rewardValueType": reward_value_type,
                     "rewardValue": reward_value,
                     "rewardType": reward_type,
-                    "checkoutAndOrderPredicate": checkout_and_order_predicate,
+                    "orderPredicate": order_predicate,
                 },
             ],
         }
@@ -806,7 +806,7 @@ def test_promotion_create_missing_predicate(
     } in errors
     assert {
         "code": PromotionCreateErrorCode.REQUIRED.name,
-        "field": "checkoutAndOrderPredicate",
+        "field": "orderPredicate",
         "index": 1,
         "message": ANY,
     } in errors
@@ -1026,7 +1026,7 @@ def test_promotion_create_invalid_channel_id(
     assert errors[0]["index"] == 0
 
 
-def test_promotion_create_mixed_catalogue_and_checkout_and_order_rules(
+def test_promotion_create_mixed_catalogue_and_order_rules(
     staff_api_client,
     permission_group_manage_discounts,
     description_json,
@@ -1048,7 +1048,7 @@ def test_promotion_create_mixed_catalogue_and_checkout_and_order_rules(
     catalogue_predicate = {
         "productPredicate": {"ids": [graphene.Node.to_global_id("Product", product.id)]}
     }
-    checkout_and_order_predicate = {
+    order_predicate = {
         "discountedObjectPredicate": {"subtotalPrice": {"range": {"gte": 100}}}
     }
     rule_1_name = "test promotion rule 1"
@@ -1078,7 +1078,7 @@ def test_promotion_create_mixed_catalogue_and_checkout_and_order_rules(
                     "channels": rule_2_channel_ids,
                     "rewardValueType": reward_value_type_2,
                     "rewardValue": reward_value,
-                    "checkoutAndOrderPredicate": checkout_and_order_predicate,
+                    "orderPredicate": order_predicate,
                 },
             ],
         }
@@ -1114,7 +1114,7 @@ def test_promotion_create_mixed_currencies_for_price_based_predicate(
     end_date = timezone.now() + timedelta(days=30)
 
     promotion_name = "test promotion"
-    checkout_and_order_predicate = {
+    order_predicate = {
         "discountedObjectPredicate": {"subtotalPrice": {"range": {"gte": 100}}}
     }
     rule_name = "test promotion rule 1"
@@ -1140,7 +1140,7 @@ def test_promotion_create_mixed_currencies_for_price_based_predicate(
                     "rewardValueType": reward_value_type,
                     "rewardValue": reward_value,
                     "rewardType": reward_type,
-                    "checkoutAndOrderPredicate": checkout_and_order_predicate,
+                    "orderPredicate": order_predicate,
                 },
             ],
         }
