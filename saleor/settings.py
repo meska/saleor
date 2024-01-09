@@ -886,6 +886,5 @@ OAUTH_UPDATE_LAST_LOGIN_THRESHOLD = parse(
     os.environ.get("OAUTH_UPDATE_LAST_LOGIN_THRESHOLD", "15 minutes")
 )
 
-# The max number of rules, with checkout_and_order_predicate defined, associated
-# with single promotion
+# The max number of rules with checkout_and_order_predicate defined
 CHECKOUT_AND_ORDER_RULES_LIMIT = os.environ.get("CHECKOUT_AND_ORDER_RULES_LIMIT", 100)
