@@ -1,5 +1,4 @@
 import json
-from unittest.mock import patch
 
 import graphene
 import pytest
@@ -75,9 +74,7 @@ def attributes_without_values():
 
 @pytest.mark.django_db
 @pytest.mark.count_queries(autouse=False)
-@patch("saleor.product.tasks.update_products_discounted_prices_task.delay")
 def test_product_bulk_create_with_base_data(
-    update_products_discounted_price_task_mock,
     staff_api_client,
     product_type,
     category,
@@ -164,8 +161,4 @@ def test_product_bulk_create_with_base_data(
     assert not data["results"][0]["errors"]
     assert not data["results"][1]["errors"]
     assert data["count"] == 2
-
-    update_products_discounted_price_task_mock.assert_called_once()
-    args = set(update_products_discounted_price_task_mock.call_args.args[0])
-    products = Product.objects.all()
-    assert args == {product.id for product in products}
+    assert Product.objects.count() == 2
